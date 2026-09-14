@@ -61,9 +61,9 @@ jobs:
           fetch-depth: 0   # build/version.sh counts existing <upstream>-mavericks.* tags
 
       - name: Install mavericks-shipyard
-        # shipyard installs itself via its own action (to $HOME/.local, self-registering in the
-        # CMake user package registry) and exports $SHIPYARD_SCRIPTS. We do NOT clone/`cmake --install` it
-        # by hand. @v1 is the moving major tag; Renovate's github-actions manager tracks it.
+        # shipyard installs itself via its own action: the pkg, which puts shipyard-cmake on PATH and
+        # exports $SHIPYARD_SCRIPTS. We do NOT clone or build it by hand. @v1 is the moving major tag;
+        # Renovate's github-actions manager tracks it.
         uses: ModernMavericks/shipyard/.github/actions/install@v1
 
       - name: Install gnupg (OpenSSH upstream PGP verification)
@@ -114,7 +114,7 @@ jobs:
         run: STAGE="$STAGE" sh tests/compat-guard.sh
 
       - name: Build updater .app
-        run: cmake --preset cross && cmake --build build/updater --target OpenSSHUpdater
+        run: shipyard-cmake --preset cross && shipyard-cmake --build build/updater --target OpenSSHUpdater
 
       - name: Package product pkg
         run: OUT="$PWD/dist" STAGE="$STAGE" sh build/package-pkg.sh

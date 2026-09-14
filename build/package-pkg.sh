@@ -14,7 +14,7 @@ OUT="${OUT:-$REPO_ROOT/dist}"; mkdir -p "$OUT"
 [ -d "$STAGE$PREFIX/bin" ] || { echo "FATAL: no staged payload at $STAGE$PREFIX (run build/build-openssh.sh first)" >&2; exit 1; }
 
 UPD_APP="${UPD_APP:-$REPO_ROOT/build/updater/OpenSSHUpdater.app}"
-[ -d "$UPD_APP" ] || { echo "FATAL: updater not built at $UPD_APP (cmake --build build/updater)" >&2; exit 1; }
+[ -d "$UPD_APP" ] || { echo "FATAL: updater not built at $UPD_APP (shipyard-cmake --build build/updater)" >&2; exit 1; }
 # The updater must NOT link the product it updates.
 otool -L "$UPD_APP/Contents/MacOS/OpenSSHUpdater" | grep -q '/usr/local/.*ssh' && { echo "FATAL: updater links the product" >&2; exit 1; } || true
 
